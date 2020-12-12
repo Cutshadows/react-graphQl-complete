@@ -1,0 +1,41 @@
+version: "3.6"
+services:
+  nodegraphql:
+      image: nodegraphql
+      container_name: nodegraphql
+      build:
+        context: ./backend/
+        dockerfile:  Docker-node-back/Node.Dockerfile
+      restart: unless-stopped
+      env_file: 
+        - ./backend/.env
+      environment:
+        - MONGO_USERNAME=mongodb
+        - MONGO_HOSTNAME=mongodb
+        - MONGO_PORT=27017
+        - MONGO_DB=graphqlreactdb
+      ports: 
+        - 3100:3100
+      volumes:
+        - .:/home/node/backend
+        - node_modules:/home/node/backend/node_modules
+      networks:
+        - mongodb_net
+   # command: ./Docker-node-back/config.sh MONGO_PORT:27017 -- /home/node/backend/node_modules/.bin/nodemon index.js
+
+volumes:
+  node_modules:
+networks:  
+  mongodb_net:
+    external:
+      name: mongodb_net
+  
+  # reactfrontgraph:
+  #   container_name: reactfrontgraph
+  #   build:
+  #     context: ./client/
+  #     dockerfile: Docker-react-front
+  #   ports:
+  #     - '3000:3000'
+
+    
